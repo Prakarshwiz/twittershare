@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="a.css">
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</head>
+
+<body>
+    <div class="container" id="loader" style="display: none;">
+        <div class="loading-container">
+            <span class="loading">Loading...</span>
+            <div class="ring-container">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
+        </div>
+    </div>
+    <article id="article">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis veritatis corrupti
+            expedita recusandae perferendis, ullam, dolorum rerum incidunt dolorem ratione opti
+            o quas minus consequatur magnam dignissimos deserunt, neque accusamus facilis!</p>
+    </article>
+
+    <div class="custom-menu" id="custom-menu">
+        <button id="share-on-twitter" onclick="shareOnTwitter()"><img class="twitter" src="twitter.png" alt=""></button>
+    </div>
+
+
+    <script>
+        const loader = document.getElementById('loader');
+        const shareButton = document.getElementById('share-on-twitter');
+        const customMenu = document.getElementById('custom-menu');
+        const article = document.getElementById('article');
+
+        let selectedText = '';
+
+
+        document.querySelector('article').addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+
+            selectedText = window.getSelection().toString();
+            if (selectedText) {
+
+                customMenu.style.left = e.clientX + 'px';
+                customMenu.style.top = e.clientY + 'px';
+                customMenu.style.display = 'block';
+            } else {
+                customMenu.style.display = 'none';
+            }
+        });
+
+
+        const body = document.body;
+
+
+        function shareOnTwitter() {
+            shareButton.style.display = 'none';
+
+            body.style.background = 'black';
+
+            article.style.display = 'none';
+            loader.style.display = 'block';
+
+
+            setTimeout(() => {
+
+                loader.style.display = 'none';
+
+                const tweetText = encodeURIComponent(selectedText);
+                const twitterURL = `https://twitter.com/intent/tweet?text=${tweetText}`;
+
+                window.open(twitterURL, "_blank");
+
+            }, 5000);
+            customMenu.style.display = 'none';
+        };
+
+
+        document.addEventListener('click', (e) => {
+            if (e.target !== shareButton) {
+                customMenu.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
